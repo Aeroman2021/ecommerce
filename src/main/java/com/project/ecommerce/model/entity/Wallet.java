@@ -1,7 +1,7 @@
-package com.project.E_Commerce.model.entity;
+package com.project.ecommerce.model.entity;
 
 
-import com.project.E_Commerce.model.entity.embedables.AuditFields;
+import com.project.ecommerce.model.entity.embedables.AuditFields;
 import jakarta.persistence.*;
 import lombok.*;
 

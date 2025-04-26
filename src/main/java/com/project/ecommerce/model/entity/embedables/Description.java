@@ -1,4 +1,4 @@
-package com.project.E_Commerce.model.entity.embedables;
+package com.project.ecommerce.model.entity.embedables;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

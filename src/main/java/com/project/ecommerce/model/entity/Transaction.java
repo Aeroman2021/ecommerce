@@ -1,7 +1,7 @@
-package com.project.E_Commerce.model.entity;
+package com.project.ecommerce.model.entity;
 
-import com.project.E_Commerce.model.entity.embedables.AuditFields;
-import com.project.E_Commerce.model.entity.enums.TransactionStatus;
+import com.project.ecommerce.model.entity.embedables.AuditFields;
+import com.project.ecommerce.model.entity.enums.TransactionStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

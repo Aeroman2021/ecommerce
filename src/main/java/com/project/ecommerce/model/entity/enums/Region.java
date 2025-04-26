@@ -1,4 +1,4 @@
-package com.project.E_Commerce.model.entity.enums;
+package com.project.ecommerce.model.entity.enums;
 
 
 public enum Region {
