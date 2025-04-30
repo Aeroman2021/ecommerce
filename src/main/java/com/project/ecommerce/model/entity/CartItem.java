@@ -23,8 +23,14 @@ public class CartItem {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "card_id",nullable = false)
+    private Card card;
+
+    @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    private int quantity;
 
     @Embedded
     private AuditFields auditFields;

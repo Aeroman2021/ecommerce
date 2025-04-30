@@ -5,6 +5,12 @@ import com.project.ecommerce.model.service.GenericService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-@Service
-public interface OrderService extends GenericService<Order,Integer> {
+import java.util.List;
+
+
+public interface OrderService  {
+    Order checkOut(int userId);
+    List<Order>  getOrdersByUserId(int userId);
+
+
 }
