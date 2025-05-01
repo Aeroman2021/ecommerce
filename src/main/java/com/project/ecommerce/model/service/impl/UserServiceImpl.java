@@ -12,7 +12,6 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -39,10 +38,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Integer id) {
-        if(getById(id).isPresent()){
-            User user =  getById(id).get();
-            userRepository.delete(user);
-        }else
-            throw new RuntimeException("");
+        userRepository.deleteById(id);
     }
 }
