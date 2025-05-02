@@ -8,11 +8,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "cart_items")
-@Getter
-@Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
+@Builder
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

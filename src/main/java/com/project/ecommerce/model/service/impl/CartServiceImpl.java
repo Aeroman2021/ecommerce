@@ -68,6 +68,7 @@ public class CartServiceImpl implements CartService {
                 .stream()
                 .filter(cartItem -> cartItem.getCard().getId() == cardId)
                 .findFirst();
+
         if (existingItem.isPresent()) {
             existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
         } else {

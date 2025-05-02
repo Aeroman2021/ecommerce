@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.apache.logging.log4j.util.Lazy;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -26,7 +27,12 @@ public class Cart {
     private User user;
 
     @OneToMany(mappedBy = "cart",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private Set<CartItem> cartItems;
+    @Builder.Default
+    private Set<CartItem> cartItems= new HashSet<>();
+
+    public Set<CartItem> getCartItems() {
+        return cartItems;
+    }
 
     @Embedded
     private AuditFields auditFields;
