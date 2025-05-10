@@ -28,7 +28,7 @@ public class User {
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private Set<Order> orders;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wallet wallet;
 
     @Embedded

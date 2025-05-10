@@ -2,7 +2,6 @@ package com.project.ecommerce.model.entity;
 
 import com.project.ecommerce.model.entity.embedables.AuditFields;
 import com.project.ecommerce.model.entity.embedables.Description;
-import com.project.ecommerce.model.entity.enums.Region;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,9 +31,8 @@ public class Card {
     @Embedded
     private Description description;
 
-    @Enumerated(EnumType.STRING)
+    @OneToOne(mappedBy = "card",cascade = CascadeType.ALL)
     private Region region;
-
 
     @OneToMany(mappedBy = "card",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<OrderItem> orderItems;

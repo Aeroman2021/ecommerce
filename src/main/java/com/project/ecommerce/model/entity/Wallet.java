@@ -18,16 +18,13 @@ import java.math.BigDecimal;
 public class Wallet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private int id;
+    @Column(name = "user_id")
+    private int user_id;
 
-    private BigDecimal amount;
+    private BigDecimal balance;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OneToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
-    @Embedded
-    private AuditFields auditFields;
 }
