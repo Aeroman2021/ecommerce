@@ -17,10 +17,6 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
     @ManyToOne
     @JoinColumn(name = "card_id",nullable = false)
     private Card card;

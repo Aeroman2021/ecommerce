@@ -1,10 +1,11 @@
 package com.project.ecommerce.model.service.impl;
 
+import com.project.ecommerce.model.Dto.AddToCartDto;
 import com.project.ecommerce.model.entity.Card;
 import com.project.ecommerce.model.entity.Cart;
 import com.project.ecommerce.model.entity.CartItem;
 import com.project.ecommerce.model.entity.User;
-import com.project.ecommerce.model.service.contract.CardService;
+import com.project.ecommerce.model.entity.embedables.AuditFields;
 import com.project.ecommerce.model.service.contract.CartService;
 import com.project.ecommerce.repository.CardRepository;
 import com.project.ecommerce.repository.CartItemRepository;
@@ -61,27 +62,42 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addToCart(int userId, int cardId, int quantity) {
+    public Cart addToCart(AddToCartDto addToCartDto) {
+        int userId = addToCartDto.getUserId();
+        int cardId = addToCartDto.getCardId();
+        int quantity = addToCartDto.getQuantity();
+
         Cart cart =
-                cartRepository.findByUserId(userId).orElse(createNewCart(userId));
+                cartRepository.findByUserId(userId)
+                        .orElse(createNewCart(userId));
+
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(()->new RuntimeException("Card not found."));
+
         Optional<CartItem> existingItem = cart.getCartItems()
                 .stream()
                 .filter(cartItem -> cartItem.getCard().getId() == cardId)
                 .findFirst();
 
         if (existingItem.isPresent()) {
-            existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
-        } else {
-            Card card = cardRepository
-                    .findById(cardId)
-                    .orElseThrow(() -> new RuntimeException("Card Not found"));
+            CartItem cartItem = existingItem.get();
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            cartItem.setAuditFields(new AuditFields());
+            cartItemRepository.save(cartItem);
 
+        } else {
             CartItem cartItem = cartItemRepository.save(
                     CartItem.builder()
-                            .cart(cart).card(card).quantity(quantity).build());
+                            .cart(cart)
+                            .card(card)
+                            .quantity(quantity)
+                            .auditFields(new AuditFields())
+                            .build());
+            cartItem = cartItemRepository.save(cartItem);
             cart.getCartItems().add(cartItem);
+            cart.setAuditFields(new AuditFields());
         }
-        cartRepository.save(cart);
+        return cartRepository.save(cart);
     }
 
     @Override
