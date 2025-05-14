@@ -3,7 +3,6 @@ package com.project.ecommerce.model.entity;
 import com.project.ecommerce.model.entity.embedables.AuditFields;
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.logging.log4j.util.Lazy;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +15,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Cart {
 
     @Id
@@ -30,8 +30,16 @@ public class Cart {
     @Builder.Default
     private Set<CartItem> cartItems= new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
+    private CartStatusEnum status =CartStatusEnum.ACTIVE;
+
     public Set<CartItem> getCartItems() {
         return cartItems;
+    }
+
+    public enum CartStatusEnum {
+        ACTIVE,FINALIZED,CANCELED
     }
 
     @Embedded

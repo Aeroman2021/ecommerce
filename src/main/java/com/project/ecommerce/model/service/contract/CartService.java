@@ -9,4 +9,5 @@ public interface CartService extends GenericService<Cart,Integer> {
     Cart addToCart(AddToCartDto addToCartDto);
     Cart getCartByUserId(int userId);
     void removeItem(int userId, int cartItemId);
+    void finalizeCart(int cartId);
 }

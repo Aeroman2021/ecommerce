@@ -1,10 +1,7 @@
 package com.project.ecommerce.model.service.impl;
 
 import com.project.ecommerce.model.Dto.AddToCartDto;
-import com.project.ecommerce.model.entity.Card;
-import com.project.ecommerce.model.entity.Cart;
-import com.project.ecommerce.model.entity.CartItem;
-import com.project.ecommerce.model.entity.User;
+import com.project.ecommerce.model.entity.*;
 import com.project.ecommerce.model.entity.embedables.AuditFields;
 import com.project.ecommerce.model.service.contract.CartService;
 import com.project.ecommerce.repository.CardRepository;
@@ -67,16 +64,21 @@ public class CartServiceImpl implements CartService {
         int cardId = addToCartDto.getCardId();
         int quantity = addToCartDto.getQuantity();
 
-        Cart cart =
-                cartRepository.findByUserId(userId)
-                        .orElse(createNewCart(userId));
+
+        Optional<Cart> optionalCart = cartRepository.findByUserAndStatus(userId, Cart.CartStatusEnum.ACTIVE)
+        Cart cart;
+        if(optionalCart.isEmpty()){
+            cart = createNewCart(userId);
+        }else{
+            cart = optionalCart.get();
+        }
 
         Card card = cardRepository.findById(cardId)
-                .orElseThrow(()->new RuntimeException("Card not found."));
+                .orElseThrow(() -> new RuntimeException("Card Not Found"));
 
         Optional<CartItem> existingItem = cart.getCartItems()
                 .stream()
-                .filter(cartItem -> cartItem.getCard().getId() == cardId)
+                .filter(cartItem -> cartItem.getCard() != null && cartItem.getCard().getId() == cardId)
                 .findFirst();
 
         if (existingItem.isPresent()) {
@@ -95,7 +97,6 @@ public class CartServiceImpl implements CartService {
                             .build());
             cartItem = cartItemRepository.save(cartItem);
             cart.getCartItems().add(cartItem);
-            cart.setAuditFields(new AuditFields());
         }
         return cartRepository.save(cart);
     }
@@ -122,6 +123,17 @@ public class CartServiceImpl implements CartService {
                 .user(user)
                 .cartItems(new HashSet<>())
                 .build());
+    }
 
+    @Override
+    public void finalizeCart(int cartId) {
+        Cart cart =
+                cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Card Not Found"));
+        cart.setStatus(Cart.CartStatusEnum.FINALIZED);
+        cart.setAuditFields(new AuditFields());
+        cartRepository.save(cart);
+        Order order = new Order();
+        order.set
     }
 }
