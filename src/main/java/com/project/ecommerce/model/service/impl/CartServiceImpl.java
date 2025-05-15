@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
         int quantity = addToCartDto.getQuantity();
 
 
-        Optional<Cart> optionalCart = cartRepository.findByUserAndStatus(userId, Cart.CartStatusEnum.ACTIVE)
+        Optional<Cart> optionalCart = cartRepository.findByUserId(userId);
         Cart cart;
         if(optionalCart.isEmpty()){
             cart = createNewCart(userId);
@@ -134,6 +134,5 @@ public class CartServiceImpl implements CartService {
         cart.setAuditFields(new AuditFields());
         cartRepository.save(cart);
         Order order = new Order();
-        order.set
     }
 }

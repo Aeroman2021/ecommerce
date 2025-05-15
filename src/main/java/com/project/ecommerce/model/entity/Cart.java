@@ -38,9 +38,14 @@ public class Cart {
         return cartItems;
     }
 
+    @OneToOne
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    private Order order;
+
     public enum CartStatusEnum {
         ACTIVE,FINALIZED,CANCELED
     }
+
 
     @Embedded
     private AuditFields auditFields;

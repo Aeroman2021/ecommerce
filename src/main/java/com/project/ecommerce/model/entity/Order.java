@@ -33,6 +33,9 @@ public class Order {
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Transaction> transactions;
 
+    @OneToOne(mappedBy = "order")
+    private Cart cart;
+
 
     @Embedded
     private AuditFields auditFields;

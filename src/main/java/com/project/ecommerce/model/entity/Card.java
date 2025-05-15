@@ -40,5 +40,4 @@ public class Card {
     @Embedded
     private AuditFields auditFields;
 
-
 }
