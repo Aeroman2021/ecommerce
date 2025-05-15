@@ -3,16 +3,15 @@ package com.project.ecommerce.model.service.impl;
 import com.project.ecommerce.model.Dto.AddToCartDto;
 import com.project.ecommerce.model.entity.*;
 import com.project.ecommerce.model.entity.embedables.AuditFields;
+import com.project.ecommerce.model.entity.enums.OrderTypes;
 import com.project.ecommerce.model.service.contract.CartService;
-import com.project.ecommerce.repository.CardRepository;
-import com.project.ecommerce.repository.CartItemRepository;
-import com.project.ecommerce.repository.CartRepository;
-import com.project.ecommerce.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.project.ecommerce.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,14 +22,16 @@ public class CartServiceImpl implements CartService {
     private final CartItemRepository cartItemRepository;
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
 
-    @Autowired
+
     public CartServiceImpl(CartRepository cartRepository, CartItemRepository cartItemRepository,
-                           CardRepository cardRepository, UserRepository userRepository) {
+                           CardRepository cardRepository, UserRepository userRepository, OrderRepository orderRepository) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -59,26 +60,25 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public Cart addToCart(AddToCartDto addToCartDto) {
         int userId = addToCartDto.getUserId();
         int cardId = addToCartDto.getCardId();
         int quantity = addToCartDto.getQuantity();
 
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseGet(() -> createNewCart(userId));
 
-        Optional<Cart> optionalCart = cartRepository.findByUserId(userId);
-        Cart cart;
-        if(optionalCart.isEmpty()){
-            cart = createNewCart(userId);
-        }else{
-            cart = optionalCart.get();
+        if (cart.getStatus() != Cart.CartStatusEnum.ACTIVE) {
+            throw new IllegalStateException("Cart is not active and cannot be modified.");
         }
 
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new RuntimeException("Card Not Found"));
 
-        Optional<CartItem> existingItem = cart.getCartItems()
-                .stream()
-                .filter(cartItem -> cartItem.getCard() != null && cartItem.getCard().getId() == cardId)
+        Optional<CartItem> existingItem = cart.getCartItems().stream()
+                .filter(cartItem -> cartItem.getCard() != null &&
+                        Objects.equals(cartItem.getCard().getId(), cardId))
                 .findFirst();
 
         if (existingItem.isPresent()) {
@@ -86,20 +86,22 @@ public class CartServiceImpl implements CartService {
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
             cartItem.setAuditFields(new AuditFields());
             cartItemRepository.save(cartItem);
-
         } else {
-            CartItem cartItem = cartItemRepository.save(
-                    CartItem.builder()
-                            .cart(cart)
-                            .card(card)
-                            .quantity(quantity)
-                            .auditFields(new AuditFields())
-                            .build());
+            CartItem cartItem = CartItem.builder()
+                    .cart(cart)
+                    .card(card)
+                    .quantity(quantity)
+                    .auditFields(new AuditFields())
+                    .build();
+
             cartItem = cartItemRepository.save(cartItem);
             cart.getCartItems().add(cartItem);
         }
+
+        cart.setAuditFields(new AuditFields());
         return cartRepository.save(cart);
     }
+
 
     @Override
     public Cart getCartByUserId(int userId) {
@@ -126,13 +128,19 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void finalizeCart(int cartId) {
+    public Cart finalizeCart(int cartId) {
         Cart cart =
                 cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Card Not Found"));
         cart.setStatus(Cart.CartStatusEnum.FINALIZED);
         cart.setAuditFields(new AuditFields());
         cartRepository.save(cart);
-        Order order = new Order();
+        Order order = Order.builder()
+                .cart(cart)
+                .orderTypes(OrderTypes.PENDING)
+                .auditFields(new AuditFields())
+                .build();
+        orderRepository.save(order);
+        return cart;
     }
 }

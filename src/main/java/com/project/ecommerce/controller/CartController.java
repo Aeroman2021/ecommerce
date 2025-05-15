@@ -5,16 +5,13 @@ import com.project.ecommerce.model.entity.Cart;
 import com.project.ecommerce.model.service.contract.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
 
-    private CartService cartService;
+    private final CartService cartService;
 
     @Autowired
     public CartController(CartService cartService) {
@@ -26,5 +23,9 @@ public class CartController {
         return ResponseEntity.ok(cartService.addToCart(addToCartDto));
     }
 
+    @PostMapping("/finalize-cart/{cartId}")
+    public ResponseEntity<Cart> finalizeCart(@PathVariable("cartId") int cartId){
+        return ResponseEntity.ok(cartService.finalizeCart(cartId));
+    }
 
 }
