@@ -7,7 +7,7 @@ import com.project.ecommerce.model.service.GenericService;
 
 public interface CartService extends GenericService<Cart,Integer> {
     Cart addToCart(AddToCartDto addToCartDto);
+    Cart finalizeCart(int cartId);
     Cart getCartByUserId(int userId);
     void removeItem(int userId, int cartItemId);
-    Cart finalizeCart(int cartId);
 }

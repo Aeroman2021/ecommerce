@@ -1,5 +1,6 @@
 package com.project.ecommerce.controller;
 
+import com.project.ecommerce.exception.ApiResponse;
 import com.project.ecommerce.model.Dto.AddToCartDto;
 import com.project.ecommerce.model.entity.Cart;
 import com.project.ecommerce.model.service.contract.CartService;
@@ -19,13 +20,15 @@ public class CartController {
     }
 
     @PostMapping(path = "/add-cart-items-to-cart")
-    public ResponseEntity<Cart> addToCart(@RequestBody AddToCartDto addToCartDto){
-        return ResponseEntity.ok(cartService.addToCart(addToCartDto));
+    public ResponseEntity<ApiResponse<Cart>> addToCart(@RequestBody AddToCartDto addToCartDto){
+        Cart cart = cartService.addToCart(addToCartDto);
+        return ResponseEntity.ok(ApiResponse.success(cart,"item added to cart successful"));
     }
 
-    @PostMapping("/finalize-cart/{cartId}")
-    public ResponseEntity<Cart> finalizeCart(@PathVariable("cartId") int cartId){
-        return ResponseEntity.ok(cartService.finalizeCart(cartId));
+    @PostMapping("/finalizeCart/{cartId}")
+    public ResponseEntity<ApiResponse<Cart>> finalizeCart(@PathVariable("cartId") int cartId){
+        Cart cart = cartService.finalizeCart(cartId);
+        return ResponseEntity.ok(ApiResponse.success(cart,"cart finalized successful"));
     }
 
 }
