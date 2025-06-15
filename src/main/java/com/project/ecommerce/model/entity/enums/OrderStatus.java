@@ -1,12 +1,12 @@
 package com.project.ecommerce.model.entity.enums;
 
-public enum OrderTypes {
-    COMPLETED(1,"COMPLETE"),PENDING(2,"PEND"),CANCELED(3,"CANCEL");
+public enum OrderStatus {
+    COMPLETED(1,"COMPLETEED"),PENDING(2,"PENDING"),CANCELED(3,"CANCELED");
 
     private int code;
     private String desc;
 
-    OrderTypes(int code, String desc) {
+    OrderStatus(int code, String desc) {
         this.code = code;
         this.desc = desc;
     }
@@ -19,14 +19,12 @@ public enum OrderTypes {
         return desc;
     }
 
-    public static OrderTypes fromCode(int code) {
-        for (OrderTypes type : OrderTypes.values()) {
+    public static OrderStatus fromCode(int code) {
+        for (OrderStatus type : OrderStatus.values()) {
             if (type.getCode() == code) {
                 return type;
             }
         }
         throw new IllegalArgumentException("Invalid code for OrderTypes: " + code);
     }
-
-
 }

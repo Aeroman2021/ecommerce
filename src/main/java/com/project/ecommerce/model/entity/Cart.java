@@ -1,6 +1,7 @@
 package com.project.ecommerce.model.entity;
 
 import com.project.ecommerce.model.entity.embedables.AuditFields;
+import com.project.ecommerce.model.entity.enums.CartStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,29 +23,18 @@ public class Cart {
     private int id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "cart",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @Builder.Default
     private Set<CartItem> cartItems= new HashSet<>();
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "STATUS")
-    private CartStatusEnum status =CartStatusEnum.ACTIVE;
-
-    public Set<CartItem> getCartItems() {
-        return cartItems;
-    }
 
     @OneToOne
     @JoinColumn(name = "order_id",referencedColumnName = "id")
     private Order order;
 
-    public enum CartStatusEnum {
-        ACTIVE,FINALIZED,CANCELED
-    }
-
+    @Enumerated(EnumType.STRING)
+    private CartStatus status;
 
     @Embedded
     private AuditFields auditFields;

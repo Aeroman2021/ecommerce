@@ -3,6 +3,9 @@ package com.project.ecommerce.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "regions")
 @Getter
@@ -12,13 +15,12 @@ import lombok.*;
 @NoArgsConstructor
 public class Region {
     @Id
-    @Column(name = "card_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "title")
     private String title;
 
-    @OneToOne
-    @JoinColumn(name = "card_id",referencedColumnName = "id")
-    private Card card;
+    @OneToMany(mappedBy = "region")
+    private Set<Card> cards = new HashSet<>();
 }

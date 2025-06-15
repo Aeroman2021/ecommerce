@@ -1,13 +1,12 @@
-package com.project.ecommerce.model.service.impl;
+package com.project.ecommerce.service.impl;
 
 import com.project.ecommerce.model.Dto.UserDto;
 import com.project.ecommerce.model.entity.User;
 import com.project.ecommerce.model.entity.embedables.AuditFields;
 import com.project.ecommerce.model.mapper.UserMapper;
-import com.project.ecommerce.model.service.contract.UserService;
+import com.project.ecommerce.service.contract.UserService;
 import com.project.ecommerce.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

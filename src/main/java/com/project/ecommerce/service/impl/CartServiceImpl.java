@@ -1,11 +1,12 @@
-package com.project.ecommerce.model.service.impl;
+package com.project.ecommerce.service.impl;
 
 import com.project.ecommerce.exception.CartFinalizeException;
 import com.project.ecommerce.model.Dto.AddToCartDto;
 import com.project.ecommerce.model.entity.*;
 import com.project.ecommerce.model.entity.embedables.AuditFields;
-import com.project.ecommerce.model.entity.enums.OrderTypes;
-import com.project.ecommerce.model.service.contract.CartService;
+import com.project.ecommerce.model.entity.enums.CartStatus;
+import com.project.ecommerce.model.entity.enums.OrderStatus;
+import com.project.ecommerce.service.contract.CartService;
 import com.project.ecommerce.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> createNewCart(userId));
 
-        if (cart.getStatus() != Cart.CartStatusEnum.ACTIVE) {
+        if (cart.getStatus() != CartStatus.ACTIVE){
             throw new IllegalStateException("Cart is not active and cannot be modified.");
         }
 
@@ -131,11 +132,11 @@ public class CartServiceImpl implements CartService {
                 cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Card Not Found"));
 
-        if (cart.getStatus() != Cart.CartStatusEnum.ACTIVE) {
+        if (cart.getStatus() != CartStatus.ACTIVE) {
             throw new CartFinalizeException("Cart is already finalized or inactive");
         }
 
-        cart.setStatus(Cart.CartStatusEnum.FINALIZED);
+        cart.setStatus(CartStatus.FINALIZED);
         cart.setAuditFields(new AuditFields());
 
         try{
@@ -146,8 +147,7 @@ public class CartServiceImpl implements CartService {
 
         cartRepository.save(cart);
         Order order = Order.builder()
-                .cart(cart)
-                .orderTypes(OrderTypes.PENDING)
+                .orderTypes(OrderStatus.PENDING)
                 .auditFields(new AuditFields())
                 .build();
         orderRepository.save(order);

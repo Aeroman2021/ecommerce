@@ -3,7 +3,7 @@ package com.project.ecommerce.controller;
 import com.project.ecommerce.exception.ApiResponse;
 import com.project.ecommerce.model.Dto.AddToCartDto;
 import com.project.ecommerce.model.entity.Cart;
-import com.project.ecommerce.model.service.contract.CartService;
+import com.project.ecommerce.service.contract.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

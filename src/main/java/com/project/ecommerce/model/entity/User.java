@@ -5,6 +5,7 @@ import com.project.ecommerce.model.entity.embedables.AuditFields;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 import java.util.Set;
 
 @Entity
@@ -31,7 +32,9 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wallet wallet;
 
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    private Cart cart;
+
     @Embedded
     private AuditFields auditFields;
-
 }

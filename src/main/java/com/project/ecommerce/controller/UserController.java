@@ -2,14 +2,9 @@ package com.project.ecommerce.controller;
 
 import com.project.ecommerce.model.Dto.UserDto;
 import com.project.ecommerce.model.entity.User;
-import com.project.ecommerce.model.entity.embedables.AuditFields;
-import com.project.ecommerce.model.service.contract.UserService;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import com.project.ecommerce.service.contract.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

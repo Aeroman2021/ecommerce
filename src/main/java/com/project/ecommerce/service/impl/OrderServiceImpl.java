@@ -1,12 +1,12 @@
-package com.project.ecommerce.model.service.impl;
+package com.project.ecommerce.service.impl;
 
 import com.project.ecommerce.model.entity.Cart;
 import com.project.ecommerce.model.entity.CartItem;
 import com.project.ecommerce.model.entity.Order;
 import com.project.ecommerce.model.entity.OrderItem;
 import com.project.ecommerce.model.entity.embedables.AuditFields;
-import com.project.ecommerce.model.entity.enums.OrderTypes;
-import com.project.ecommerce.model.service.contract.OrderService;
+import com.project.ecommerce.model.entity.enums.OrderStatus;
+import com.project.ecommerce.service.contract.OrderService;
 import com.project.ecommerce.repository.CartRepository;
 import com.project.ecommerce.repository.OrderItemRepository;
 import com.project.ecommerce.repository.OrderRepository;
@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.save(Order.builder()
                 .user(cart.getUser())
-                .orderTypes(OrderTypes.PENDING)
+                .orderTypes(OrderStatus.PENDING)
                 .auditFields(new AuditFields())
                 .build());
 

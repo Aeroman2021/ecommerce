@@ -1,7 +1,7 @@
-package com.project.ecommerce.model.service.impl;
+package com.project.ecommerce.service.impl;
 
 import com.project.ecommerce.model.entity.Card;
-import com.project.ecommerce.model.service.contract.CardService;
+import com.project.ecommerce.service.contract.CardService;
 import com.project.ecommerce.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
