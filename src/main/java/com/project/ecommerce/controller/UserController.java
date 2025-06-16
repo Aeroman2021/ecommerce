@@ -22,6 +22,6 @@ public class UserController {
     @PostMapping(path = "/add")
     public ResponseEntity<User> add(@RequestBody @Validated UserDto userDto){
         User user = userService.createFromDto(userDto);
-        return ResponseEntity.ok(userService.create(user));
+        return ResponseEntity.ok(userService.saveOrUpdate(user));
     }
 }

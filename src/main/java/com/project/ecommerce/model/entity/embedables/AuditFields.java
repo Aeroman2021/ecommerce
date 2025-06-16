@@ -5,7 +5,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
@@ -13,6 +15,7 @@ import java.time.Instant;
 
 @Embeddable
 @Getter @Setter
+@NoArgsConstructor
 public class AuditFields {
 
     @Column(name = "created_at")
