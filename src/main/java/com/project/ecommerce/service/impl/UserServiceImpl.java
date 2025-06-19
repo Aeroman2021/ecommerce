@@ -23,19 +23,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User create(User user) {
-        User insertedUser = User.builder()
-                .name(user.getName())
-                .username(user.getUsername())
-                .password(passwordEncoder.encode(user.getPassword()))
-                .auditFields(new AuditFields())
-                .build();
-
-        return userRepository.save(insertedUser);
-    }
-
-    @Override
-    public User update(Integer integer, User user) {
+    public User saveOrUpdate(User entity) {
         return null;
     }
 

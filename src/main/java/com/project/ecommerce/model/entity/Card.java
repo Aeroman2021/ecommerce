@@ -44,7 +44,4 @@ public class Card extends BaseEntity{
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @Embedded
-    private AuditFields auditFields;
-
 }

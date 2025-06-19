@@ -1,12 +1,13 @@
 package com.project.ecommerce.model.Dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Getter @Setter
+@Getter @Setter @Builder
 public class CardDto {
 
     private Integer id;

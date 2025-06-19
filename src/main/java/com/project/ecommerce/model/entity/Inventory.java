@@ -1,6 +1,5 @@
 package com.project.ecommerce.model.entity;
 
-import com.project.ecommerce.model.entity.embedables.AuditFields;
 import com.project.ecommerce.model.entity.enums.InventoryStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Inventory {
+public class Inventory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +28,4 @@ public class Inventory {
     @ManyToOne
     @JoinColumn(name = "card_id",nullable = false)
     private Card card;
-
-    @Embedded
-    private AuditFields auditFields;
 }

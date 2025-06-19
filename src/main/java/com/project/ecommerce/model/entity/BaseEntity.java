@@ -14,12 +14,14 @@ import java.time.LocalDateTime;
 public class BaseEntity {
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(name = "created_at",updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(name = "updated_at")
     private LocalDateTime  updatedAt;
 
+    @Column(name = "deleted_at")
     private LocalDateTime  deletedAt;
 
     public void softDelete() {

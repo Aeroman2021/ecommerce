@@ -34,12 +34,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart create(Cart cart) {
-        return null;
-    }
-
-    @Override
-    public Cart update(Integer integer, Cart cart) {
+    public Cart saveOrUpdate(Cart entity) {
         return null;
     }
 

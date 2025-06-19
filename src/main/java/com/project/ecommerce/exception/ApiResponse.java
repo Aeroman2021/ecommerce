@@ -24,11 +24,14 @@ public class ApiResponse<T> {
         this();
         this.success = success;
         this.message = message;
-
     }
 
     public static <T> ApiResponse<T> success(T data,String message){
         return new ApiResponse<>(true,message,data);
+    }
+
+    public static <T> ApiResponse<T> success(String message){
+        return new ApiResponse<>(true,message);
     }
 
     public static <T> ApiResponse<T> failure(T data,String message){

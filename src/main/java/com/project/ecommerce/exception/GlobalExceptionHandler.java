@@ -29,6 +29,4 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(cartFinalizeException.getMessage()));
     }
 
-
-
 }
