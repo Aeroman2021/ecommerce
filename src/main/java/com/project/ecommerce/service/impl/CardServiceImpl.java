@@ -97,7 +97,7 @@ public class CardServiceImpl implements CardService{
                 .orElseThrow(() -> new RuntimeException("card Not Found"));
         return cardMapper.toDto(card);
     }
-
+    
     @Override
     public void delete(Integer id) {
         Card card = cardRepository.findById(id)
@@ -105,4 +105,5 @@ public class CardServiceImpl implements CardService{
         card.softDelete();
         cardRepository.save(card);
     }
+
 }

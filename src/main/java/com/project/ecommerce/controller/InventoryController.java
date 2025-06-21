@@ -5,11 +5,13 @@ import com.project.ecommerce.model.Dto.InventoryDto;
 import com.project.ecommerce.service.contract.InventoryService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 @RequestMapping("/api/inventories")
 public class InventoryController {
 
@@ -19,16 +21,13 @@ public class InventoryController {
         this.inventoryService = inventoryService;
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse<InventoryDto>> saveOrUpdate(@RequestBody InventoryDto inventoryDto){
         InventoryDto result = inventoryService.createOrUpdate(inventoryDto);
-        return ResponseEntity.ok(ApiResponse.success(result,"new Inventory Added/updated successfully"));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Integer id){
-        inventoryService.delete(id);
-        return  ResponseEntity.ok(ApiResponse.success("Inventory deleted successfully"));
+        if(inventoryDto.getId() != null){
+            return ResponseEntity.ok(ApiResponse.success(result,"new Inventory updated successfully"));
+        }else
+            return ResponseEntity.ok(ApiResponse.success(result,"new Inventory saved successfully"));
     }
 
     @GetMapping("/{id}")
@@ -37,7 +36,13 @@ public class InventoryController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping
+    @GetMapping("/get-Count-By-CardId/{cardId}")
+    public ResponseEntity<Long> getCountByCardId(@RequestBody InventoryDto inventoryDto){
+        Long count = inventoryService.countInventoriesByCardIdAndStatus(inventoryDto.getCardId(),inventoryDto.getStatus() );
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/list")
     public ResponseEntity<List<InventoryDto>> getAll(
             @RequestParam (defaultValue = "0") int page,
             @RequestParam  (defaultValue = "10")int saze
@@ -48,9 +53,10 @@ public class InventoryController {
     }
 
 
-
-
-
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Integer id){
+        inventoryService.delete(id);
+        return  ResponseEntity.ok(ApiResponse.success("Inventory deleted successfully"));
+    }
 
 }

@@ -2,6 +2,7 @@ package com.project.ecommerce.service.contract;
 
 
 import com.project.ecommerce.model.Dto.InventoryDto;
+import com.project.ecommerce.model.entity.enums.InventoryStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +20,7 @@ public interface InventoryService {
     List<InventoryDto> getAllInventories();
 
     void delete(Integer id);
+
+    Long countInventoriesByCardIdAndStatus(int CardId, InventoryStatus status);
+
 }

@@ -15,4 +15,5 @@ public interface CardService  {
     List<CardDto> getAllCards();
 
     void delete(Integer id);
+
 }

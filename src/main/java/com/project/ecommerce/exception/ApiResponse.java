@@ -1,7 +1,14 @@
 package com.project.ecommerce.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.sql.Timestamp;
 
+
+
+@Data
 public class ApiResponse<T> {
 
     private boolean success;
@@ -41,7 +48,5 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> failure(String message){
         return new ApiResponse<>(false,message);
     }
-
-
 
 }

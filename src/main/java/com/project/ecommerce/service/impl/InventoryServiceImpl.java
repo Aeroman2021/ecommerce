@@ -3,15 +3,18 @@ package com.project.ecommerce.service.impl;
 import com.project.ecommerce.model.Dto.InventoryDto;
 import com.project.ecommerce.model.entity.Card;
 import com.project.ecommerce.model.entity.Inventory;
+import com.project.ecommerce.model.entity.enums.InventoryStatus;
 import com.project.ecommerce.model.mapper.InventoryMapper;
 import com.project.ecommerce.repository.CardRepository;
 import com.project.ecommerce.repository.InventoryRepository;
 import com.project.ecommerce.service.contract.InventoryService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class InventoryServiceImpl implements InventoryService {
     private InventoryRepository inventoryRepository;
     private CardRepository cardRepository;
@@ -27,21 +30,21 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public InventoryDto createOrUpdate(InventoryDto inventoryDto) {
         Card card = cardRepository.findById(inventoryDto.getCardId())
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new RuntimeException("Card not found"));
 
         Inventory inventory;
         if(inventoryDto.getId() == null){
             inventory = Inventory.builder()
                     .code(inventoryDto.getCode())
                     .card(card)
-                    .status(inventoryDto.getStatus())
+                    .status(InventoryStatus.AVAILABLE)
                     .build();
         }else {
             inventory = inventoryRepository.findById(inventoryDto.getId())
                     .orElseThrow(() -> new RuntimeException(""));
             inventory.setCode(inventoryDto.getCode());
             inventory.setCard(card);
-            inventory.setStatus(inventoryDto.getStatus());
+            inventory.setStatus(InventoryStatus.SOLD);
         }
 
         Inventory result = inventoryRepository.save(inventory);
@@ -79,4 +82,8 @@ public class InventoryServiceImpl implements InventoryService {
         inventoryRepository.save(inventory);
     }
 
+    @Override
+    public Long countInventoriesByCardIdAndStatus(int CardId, InventoryStatus status) {
+        return inventoryRepository.countInventoriesByCardIdAndStatus(CardId,status);
+    }
 }
