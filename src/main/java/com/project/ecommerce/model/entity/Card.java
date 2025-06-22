@@ -2,11 +2,12 @@ package com.project.ecommerce.model.entity;
 
 import com.project.ecommerce.model.entity.embedables.AuditFields;
 import com.project.ecommerce.model.entity.embedables.Description;
-import com.project.ecommerce.model.entity.enums.Region;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Card {
+public class Card extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,18 +30,18 @@ public class Card {
     @Column(name = "ir_price")
     private  BigDecimal irPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "card_type_id")
+    private CardType cardType;
+
+    @OneToMany(mappedBy = "card")
+    private List<Inventory> inventoryList = new ArrayList<>();
+
     @Embedded
     private Description description;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "region_id")
     private Region region;
-
-
-    @OneToMany(mappedBy = "card",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Set<OrderItem> orderItems;
-
-    @Embedded
-    private AuditFields auditFields;
-
 
 }

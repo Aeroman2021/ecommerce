@@ -5,6 +5,7 @@ import com.project.ecommerce.model.entity.embedables.AuditFields;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 import java.util.Set;
 
 @Entity
@@ -28,10 +29,12 @@ public class User {
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private Set<Order> orders;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wallet wallet;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    private Cart cart;
 
     @Embedded
     private AuditFields auditFields;
-
 }

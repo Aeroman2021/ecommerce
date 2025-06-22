@@ -2,6 +2,7 @@ package com.project.ecommerce.model.entity;
 
 import com.project.ecommerce.model.entity.embedables.AuditFields;
 import com.project.ecommerce.model.entity.enums.TransactionStatus;
+import com.project.ecommerce.model.entity.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,8 +27,10 @@ public class Transaction {
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_status")
     private TransactionStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
@@ -35,6 +38,4 @@ public class Transaction {
 
     @Embedded
     private AuditFields auditFields;
-
-
 }
